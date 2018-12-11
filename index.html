@@ -28,7 +28,7 @@
         position: fixed;
         top: 20px;
         left: 30px;
-        font-size: 40px;
+        font-size: 3em;
         cursor: pointer;
         opacity: 0.2;
     }
@@ -44,8 +44,12 @@
     var themeSong = new Howl({
         src: ['Tetris.ogg'],
         autoUnlock: true,
-        loop: true,
         volume: 0.5,
+    })
+    
+    themeSong.on('end', function() {
+        // auto replay with small pause
+        setTimeout(function(){ themeSong.play(); }, 500);
     });
 
     var loser = new Howl({
@@ -70,6 +74,8 @@
     }
 
     themeSong.play();
+    setInterval(function() { document.title = " ****** GAMING ****** " }, 800);
+    setTimeout(function(){ setInterval(function() { document.title = " *** TEKIMOU.COM *** " }, 800); }, 400);
     </script>
 </body>
 </html>
