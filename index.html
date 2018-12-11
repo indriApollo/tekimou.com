@@ -3,68 +3,73 @@
 <head>
     <title> *** TEKIMOU.COM *** </title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="blockrain/blockrain.css">
+    <script
+			  src="https://code.jquery.com/jquery-1.12.4.min.js"
+			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+			  crossorigin="anonymous"></script>
+    <script src="blockrain/blockrain.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.core.min.js"></script>
     <style>
     body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
         margin: 0;
+        padding: 0;
         background-color: black;
     }
-    .mhead {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 50%;
-        width: 50%;
-        height: auto;
-    }
-    audio {
-        position: fixed;
-        left: 5px;
-        bottom: 5px;
-    }
-    @keyframes fadein {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-    }
-    .txtbox {
-        position: absolute;
-        top: 40vh;
+    .game {
         width: 100vw;
-        text-shadow: 2px 2px 4px #000000;
-        text-align: center;
-        color: white;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 2vw;
+        height: 100vh;
     }
-    .fadehiddentxt {
-        opacity: 0;
+    .blockrain-btn {
+        cursor: pointer;
     }
-    .fadeintxt {
-        animation: fadein 5s;
+    .mute {
+        position: fixed;
+        top: 20px;
+        left: 30px;
+        font-size: 40px;
+        cursor: pointer;
+        opacity: 0.2;
+    }
+    .mute:hover {
+        opacity: 1.0;
     }
     </style>
 </head>
 <body>
-    <img src="maury.jpg" class="mhead">
-    <div class="txtbox">
-        <h1 id="rip" class="fadehiddentxt">R.I.P</h1>
-        <h1 id="date" class="fadehiddentxt">1997 - 2018</h1>
-        <h1 id="gone" class="fadehiddentxt">Gone But Not Forgotten</h1>
-    </div>
-    <audio autoplay loop controls>
-        <source src="Blonde_Redhead_For_the_Damaged_Coda.mp3" type="audio/mp3">
-    </audio>
+    <div class="game"></div>
+    <h1 class="mute" onClick="toggleMute()">🔇</h1>
     <script>
-        const rip = document.getElementById("rip");
-        const date = document.getElementById("date");
-        const gone = document.getElementById("gone");
+    var themeSong = new Howl({
+        src: ['Tetris.ogg'],
+        autoUnlock: true,
+        loop: true,
+        volume: 0.5,
+    });
 
-        setTimeout(function(){ doFadeIn(rip); }, 3000);
-        setTimeout(function(){ doFadeIn(date); }, 11000);
-        setTimeout(function(){ doFadeIn(gone); }, 33000);
+    var loser = new Howl({
+        src: ['Loser.mp3'],
+        autoUnlock: true,
+        volume: 0.5,
+    });
 
-        function doFadeIn(el) {
-            el.className = "fadeintxt";
+    $('.game').blockrain({
+        theme: "candy",
+        autoBlockWidth: true,
+        onGameOver: function() {
+            themeSong.stop();
+            loser.play();
+            setTimeout(function(){ themeSong.play(); }, 5000);
         }
+    });
+
+    function toggleMute()
+    {
+        themeSong.mute(!themeSong.mute());
+    }
+
+    themeSong.play();
     </script>
 </body>
 </html>
